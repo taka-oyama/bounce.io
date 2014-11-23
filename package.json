@@ -1,0 +1,22 @@
+{
+  "name": "socket-handler",
+  "version": "0.1.0",
+  "description": "test for socket io",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+
+  "dependencies": {
+    "nodemon"   : "*",
+    "express"   : "*",
+    "socket.io" : "*",
+    "cookie"    : "*",
+    "extend"    : "*",
+    "moment"    : "*",
+    "underscore": "*",
+    "colors"    : "*"
+  }
+}

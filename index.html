@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <script src="/socket.io.js"></script>
+    <script src="/jquery-2.2.3.min.js"></script>
+  </head>
+  <body>
+    <button id="listButton">Rooms</button>
+    <button id="broadcastButton">Emit</button>
+    <input type="text" id="roomId"></input>
+    <button id="joinButton">Join</button>
+    <div>
+      <code id="roomList"></code>
+    </div>
+
+    <script>
+      var socket = io.connect('http://localhost:8080');
+
+      $("#listButton").on("click", function(evt) {
+        $.get("/rooms", function(data) {
+          console.log(data);
+          $("#roomList").text(data);
+        });
+      });
+
+      $("#broadcastButton").on("click", function(evt) {
+        socket.emit('emit', { test : "123" }, function() {
+          console.log("!");
+        });
+      });
+
+      $("#joinButton").on("click", function(evt) {
+        socket.emit('join', { name : $("#roomId").val() });
+      });
+
+      socket.on('connect', function () {
+        socket.emit('hi!');
+      });
+    </script>
+  </body>
+</html>
