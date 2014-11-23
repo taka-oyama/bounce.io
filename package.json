@@ -1,22 +1,15 @@
 {
-  "name": "socket-handler",
+  "name": "bounce.io",
   "version": "0.1.0",
-  "description": "test for socket io",
+  "description": "Simple socket.io for practical client-centric game",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "Takayasu Oyama",
+  "license": "MIT",
 
   "dependencies": {
-    "nodemon"   : "*",
     "express"   : "*",
     "socket.io" : "*",
     "cookie"    : "*",
-    "extend"    : "*",
-    "moment"    : "*",
-    "underscore": "*",
     "colors"    : "*"
   }
 }
