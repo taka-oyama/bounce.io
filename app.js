@@ -1,2 +1,6 @@
-var socket = require('./app/socket').init();
-var express = require('./app/express').init(socket);
+var bounce = require('./lib/socket');
+var config = require('./config/socket');
+
+var bounce = bounce.init(config);
+
+require('./app/express').init(bounce);

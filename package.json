@@ -9,8 +9,8 @@
   "dependencies": {
     "express" : "*",
     "socket.io" : "*",
-    "cookie" : "*",
+    "socket.io-redis" : "*",
     "colors" : "*",
-    "socket.io-redis" : "*"
+    "lodash" : "*"
   }
 }
