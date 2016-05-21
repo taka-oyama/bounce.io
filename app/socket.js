@@ -1,15 +1,25 @@
 var app = exports = module.exports = {};
 
 var colors = require('colors');
+var adapter = require('socket.io-redis');
+var redis = adapter(require('../config/redis.js'));
 
 app.init = function() {
   var io = require('socket.io').listen(8080);
+  io.adapter(redis);
+
   app.nsp = io.nsps['/'];
   console.log('Socket.io listening on port 8080');
 
+  io.use(function(socket, next) {
+    var handshakeData = socket.request;
+    console.log(handshakeData);
+    next();
+  });
+
   io.on('connection', function(socket) {
     console.log(socket.id.bold + " connected".green);
-    socket.room = socket.id;
+    socket.roomId = socket.id;
 
     handleDisconnect(socket);
     handleJoin(socket);
@@ -23,49 +33,46 @@ app.init = function() {
 
 function handleDisconnect(socket) {
   socket.on('disconnect', function() {
-    app.nsp.in(socket.room).emit('left', { reason : 'disconnected' })
+    app.nsp.in(socket.roomId).emit('left', { reason : 'disconnected' })
     console.log(socket.id.bold + " disconnected".red);
   });
 }
 
 function handleJoin(socket) {
   socket.on('join', function(data, callback) {
-    socket.join(data.name);
-    socket.room = data.name;
-    app.nsp.in(socket.room).emit('joined', data);
-    console.log(socket.id.bold + " joined room => " + data.name.cyan);
+    socket.join(data.roomId);
+    socket.roomId = data.roomId;
+    socket.broadcast.in(socket.roomId).emit('joined', data);
+    console.log(socket.id.bold + " joined room => " + data.roomId.cyan);
     if(callback) callback();
   });
 }
 
 function handleLeave(socket) {
   socket.on('leave', function(data) {
-    socket.leave(socket.room);
-    app.nsp.in(socket.room).emit('left', data);
+    socket.leave(socket.roomId);
+    app.nsp.in(socket.roomId).emit('left', data);
     console.log(socket.id.bold + " left room => " + data.name.cyan);
   });
 }
 
 function handleEmit(socket) {
   socket.on('emit', function(data, callback) {
-    app.nsp.in(socket.room).emit('emit', data);
+    app.nsp.in(socket.roomId).emit('emitted', data);
     if(callback) callback();
   });
 }
 
 function handleBroadcast(socket) {
   socket.on('broadcast', function(data, callback) {
-    socket.broadcast.in(socket.room).emit(data);
+    socket.broadcast.in(socket.roomId).emit(data);
     if(callback) callback();
   });
 }
 
 function handleUnicast(socket) {
   socket.on('unicast', function(data, callback) {
-    if(data.target in app.nsp.in(socket.room).sockets) {
-      app.nsp.in(socket.room).sockets[data.target].emit('unicast', data, function(res) {
-        if(callback) callback();
-      });
-    }
+    socket.broadcast.in(data.target).emit('unicast', data);
+    if(callback) callback();
   });
 }

@@ -35,6 +35,7 @@
       });
 
       socket.on('connect', function () {
+        console.log(socket);
         socket.emit('hi!');
       });
     </script>

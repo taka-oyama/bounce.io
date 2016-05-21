@@ -7,9 +7,10 @@
   "license": "MIT",
 
   "dependencies": {
-    "express"   : "*",
+    "express" : "*",
     "socket.io" : "*",
-    "cookie"    : "*",
-    "colors"    : "*"
+    "cookie" : "*",
+    "colors" : "*",
+    "socket.io-redis" : "*"
   }
 }

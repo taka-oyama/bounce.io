@@ -1,2 +1,2 @@
-var socket = require('./lib/socket').init();
-var express = require('./lib/express').init(socket);
+var socket = require('./app/socket').init();
+var express = require('./app/express').init(socket);

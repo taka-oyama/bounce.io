@@ -1,4 +1,4 @@
-var app = exports = module.exports = {};
+var app = module.exports = {};
 var express = require('express');
 
 app.init = function(socket) {
@@ -8,7 +8,7 @@ app.init = function(socket) {
   console.log('Express listening on port 3000');
 
   server.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(process.cwd() + '/index.html');
   });
 
   server.get('/rooms', function (req, res) {
